@@ -1,0 +1,20 @@
+SELECT `akt`.`n`
+FROM (
+  SELECT `name` AS `n`
+  FROM `aktualne`
+) AS `akt`
+WHERE `akt`.`n` = '2008' 
+
+$subSelect = $db->select()
+->from('aktualne', array('n' => 'name'));
+
+$subSelectString = '(' . $subSelect->__toString() . ')';
+
+$select = $db->select()
+->from(
+    array('akt' => new Zend_Db_Expr($subSelectString)),
+    array('n')
+)
+->where('akt.n = ?', 2008);
+
+$db->fetchAll($select);
